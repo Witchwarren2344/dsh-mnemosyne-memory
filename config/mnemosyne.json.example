@@ -1,0 +1,23 @@
+{
+  "enabled": true,
+
+  "embedding": {
+    "enabled": true,
+    "provider": "gemini",
+    "model": "gemini-embedding-001",
+    "dimensions": 768,
+    "apiKey": "YOUR_API_KEY_HERE"
+  },
+
+  "reflect": {
+    "enabled": true,
+    "provider": "gemini",
+    "model": "gemini-flash-lite-latest",
+    "temperature": 0.3,
+    "maxTokens": 2000,
+    "timeoutMs": 30000,
+    "apiKey": "YOUR_API_KEY_HERE"
+  },
+
+  "sharedBanks": {}
+}

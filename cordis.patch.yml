@@ -1,0 +1,16 @@
+# Mnemosyne 永久记忆插件 - DSH Bundle 配置
+#
+# 安装: `dsh plugin --profile <name> add dsh-mnemosyne-memory`
+#
+# 此插件提供长期记忆能力：
+# - 向量语义搜索（支持 Gemini/OpenAI/DeepSeek/Ollama）
+# - LLM 驱动的深度反思
+# - 知识页面自动生成
+# - 代码库测绘
+# - 跨会话记忆回溯
+
+patches:
+  - target: enterprise-ai-manager
+    patch:
+      - path: ./src/mnemosyne/plugin.js
+        inject: true

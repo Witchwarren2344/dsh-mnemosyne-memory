@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Data files
+data/
+*.db
+
+# Configuration
+config/*.json
+!config/*.example
+
+# Memory banks (workspace-specific, not committed)
+data/mnemosyne/
+
+# OS
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
