@@ -36,6 +36,88 @@
 
 ---
 
+## 🗺️ 免费部署流程图 | Free Deployment Flowchart
+
+> **全程零费用，两种路径任选其一**
+>
+> **Zero cost for both paths — choose either one.**
+
+```mermaid
+flowchart TD
+    Start([🚀 开始]) --> Choice{选择路径}
+
+    subgraph shared ["📋 前置条件（共用）"]
+        P1[安装 DSH Desktop\n ~5 min]:::common
+        P2[克隆仓库\ngit clone\n~1 min]:::common
+        P3[安装依赖\nnpm install\n~2 min]:::common
+    end
+
+    P1 & P2 & P3 --> PreDone[✅ 前置完成\n总耗时 ~8 min | ¥0]
+
+    Choice -->|🌐 免费 Gemini API| G_PATH
+    Choice -->|💻 完全离线 Ollama| O_PATH
+
+    subgraph gemini ["🌐 免费 Gemini API 路径"]
+        G_PATH --> G1[创建 Google AI Studio 账号\nhttps://aistudio.google.com\n~3 min | ¥0]:::gemini
+        G1 --> G2[获取免费 API Key\n每月 1500 次额度\n~1 min | ¥0]:::gemini
+        G2 --> G3[配置 mnemosyne.json\n填入 API Key\n~2 min | ¥0]:::gemini
+        G3 --> G4[执行安装脚本\n./scripts/install.sh\n~1 min | ¥0]:::gemini
+        G4 --> G5[验证安装\ndsh plugin list\n~1 min | ¥0]:::gemini
+    end
+
+    subgraph ollama ["💻 完全离线 Ollama 路径"]
+        O_PATH --> O1[安装 Ollama\nbrew install ollama\n~2 min | ¥0]:::ollama
+        O1 --> O2[拉取嵌入模型\nollama pull nomic-embed-text\n~3-5 min | ¥0]:::ollama
+        O2 --> O3[配置 mnemosyne.json\n设置 provider = ollama\n~2 min | ¥0]:::ollama
+        O3 --> O4[执行安装脚本\n./scripts/install.sh\n~1 min | ¥0]:::ollama
+        O4 --> O5[验证安装\ndsh plugin list\n~1 min | ¥0]:::ollama
+    end
+
+    G5 --> Verify["✅ 验证与使用"]
+    O5 --> Verify
+
+    subgraph verify ["✅ 验证与使用（共用）"]
+        V1[运行健康检查\ndsh doctor\n~30s | ¥0]:::verify
+        V2[开始使用记忆功能\nmnemo_store / mnemo_recall\n即时 | ¥0]:::verify
+        V3[知识沉淀自动维护\n跨会话持续生效\n¥0]:::verify
+    end
+
+    Verify --> V1 --> V2 --> V3
+
+    subgraph result ["🎯 最终结果"]
+        R1["🌐 Gemini 路径\n✅ 免费额度充足\n✅ 云端高精度\n⚠️ 首次需联网"]:::result
+        R2["💻 Ollama 路径\n✅ 完全离线\n✅ 数据不离开本地\n⚠️ 需下载模型"]:::result
+    end
+
+    V3 --> R1
+    V3 --> R2
+
+    classDef gemini fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef ollama fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef common fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef verify fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    classDef result fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+```
+
+### 步骤耗时与费用汇总
+
+| 路径 | 总耗时 | 费用 | 推荐场景 |
+|------|--------|------|----------|
+| 🌐 **免费 Gemini API** | ~12-15 min | ¥0 | 首次体验、需要高精度 |
+| 💻 **完全离线 Ollama** | ~10-13 min | ¥0 | 隐私敏感、离线环境 |
+
+### 两条路径核心差异
+
+| 维度 | 🌐 免费 Gemini API | 💻 完全离线 Ollama |
+|------|---------------------|---------------------|
+| **网络依赖** | 需联网获取 API Key | 仅需首次下载模型 |
+| **运行时网络** | 可选（可切换本地） | 完全离线 ✓ |
+| **数据隐私** | 云端推理时上传 | 数据永不离开设备 ✓ |
+| **嵌入精度** | 高（Google 模型） | 中（本地模型） |
+| **硬件要求** | 任意设备 | 建议 8GB+ RAM |
+
+---
+
 ## 📖 Project Overview | 项目简介
 
 **Mnemosyne** is a permanent memory plugin for [DeepSeek Harness (DSH)](https://github.com/deepseek-ai/deepseek-harness), providing **cross-session long-term memory capabilities** for AI Agents.
