@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mnemosyne 知识图谱 | Knowledge Graph</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 100%);
+            color: #fff;
+            overflow: hidden;
+        }
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 20px 30px;
+            background: rgba(10, 10, 26, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.3);
+        }
+        .header h1 {
+            font-size: 24px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .header .stats {
+            display: flex;
+            gap: 25px;
+            font-size: 14px;
+            color: #888;
+        }
+        .header .stats span {
+            color: #667eea;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+        #graph-container {
+            width: 100vw;
+            height: 100vh;
+            padding-top: 70px;
+        }
+        .tooltip {
+            position: fixed;
+            background: rgba(15, 15, 35, 0.98);
+            border: 1px solid rgba(102, 126, 234, 0.6);
+            border-radius: 12px;
+            padding: 18px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            max-width: 350px;
+            backdrop-filter: blur(15px);
+            z-index: 200;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+        }
+        .tooltip.visible { opacity: 1; }
+        .tooltip h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 15px;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.3);
+            padding-bottom: 8px;
+        }
+        .tooltip .content {
+            color: #ddd;
+            font-size: 13px;
+            line-height: 1.6;
+            max-height: 150px;
+            overflow: hidden;
+        }
+        .tooltip .meta {
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(102, 126, 234, 0.2);
+            font-size: 11px;
+            color: #888;
+            display: flex;
+            gap: 15px;
+        }
+        .legend {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            background: rgba(15, 15, 35, 0.95);
+            border-radius: 15px;
+            padding: 18px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            z-index: 100;
+        }
+        .legend h4 {
+            margin-bottom: 12px;
+            color: #667eea;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+            font-size: 12px;
+            color: #aaa;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .legend-item:hover { color: #fff; }
+        .legend-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            box-shadow: 0 0 10px currentColor;
+        }
+        .controls {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 100;
+        }
+        .controls button {
+            background: rgba(15, 15, 35, 0.95);
+            border: 1px solid rgba(102, 126, 234, 0.4);
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+        .controls button:hover {
+            background: rgba(102, 126, 234, 0.3);
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+        .search-box {
+            position: fixed;
+            top: 85px;
+            right: 30px;
+            z-index: 100;
+        }
+        .search-box input {
+            background: rgba(15, 15, 35, 0.95);
+            border: 1px solid rgba(102, 126, 234, 0.4);
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 25px;
+            width: 280px;
+            font-size: 14px;
+            outline: none;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+        .search-box input::placeholder { color: #666; }
+        .search-box input:focus { 
+            border-color: #667eea; 
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+        }
+        svg { width: 100%; height: 100%; }
+        .link { 
+            stroke: rgba(102, 126, 234, 0.4); 
+            stroke-width: 1.5;
+            stroke-dasharray: 5,5;
+        }
+        .link.category { stroke-dasharray: none; stroke-width: 2; }
+        .link.similar { stroke: rgba(240, 147, 251, 0.3); }
+        .link.relates-to { stroke: rgba(79, 172, 254, 0.3); }
+        .node circle { 
+            stroke: #fff; 
+            stroke-width: 2.5; 
+            cursor: pointer; 
+            transition: all 0.3s;
+            filter: drop-shadow(0 0 8px currentColor);
+        }
+        .node:hover circle { 
+            stroke-width: 4;
+            filter: drop-shadow(0 0 15px currentColor);
+        }
+        .node text { 
+            fill: #fff; 
+            font-size: 11px; 
+            pointer-events: none; 
+            text-anchor: middle;
+            font-weight: 500;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        }
+        .type-node circle { stroke-dasharray: 3,2; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🧠 Mnemosyne 知识图谱</h1>
+        <div class="stats">
+            <div>实体<span id="node-count">0</span></div>
+            <div>关系<span id="link-count">0</span></div>
+            <div>记忆<span id="memory-count">0</span></div>
+        </div>
+    </div>
+    
+    <div class="search-box">
+        <input type="text" id="search" placeholder="🔍 搜索实体或记忆...">
+    </div>
+    
+    <div id="graph-container"></div>
+    
+    <div class="tooltip" id="tooltip">
+        <h3 id="tooltip-title"></h3>
+        <div class="content" id="tooltip-content"></div>
+        <div class="meta">
+            <span id="tooltip-type"></span>
+            <span id="tooltip-importance"></span>
+            <span id="tooltip-date"></span>
+        </div>
+    </div>
+    
+    <div class="legend">
+        <h4>实体类型</h4>
+        <div class="legend-item" data-type="decision"><div class="legend-dot" style="background:#667eea;color:#667eea"></div>决策 Decision</div>
+        <div class="legend-item" data-type="insight"><div class="legend-dot" style="background:#f093fb;color:#f093fb"></div>洞察 Insight</div>
+        <div class="legend-item" data-type="initiative"><div class="legend-dot" style="background:#4fac00;color:#4fac00"></div>项目 Initiative</div>
+        <div class="legend-item" data-type="convention"><div class="legend-dot" style="background:#00f2fe;color:#00f2fe"></div>惯例 Convention</div>
+        <div class="legend-item" data-type="review"><div class="legend-dot" style="background:#fa709a;color:#fa709a"></div>评审 Review</div>
+        <div class="legend-item" data-type="commit"><div class="legend-dot" style="background:#ffd93d;color:#ffd93d"></div>提交 Commit</div>
+        <div class="legend-item" data-type="survey"><div class="legend-dot" style="background:#ff6b6b;color:#ff6b6b"></div>测绘 Survey</div>
+        <div class="legend-item" data-type="page"><div class="legend-dot" style="background:#a855f7;color:#a855f7"></div>页面 Page</div>
+    </div>
+    
+    <div class="controls">
+        <button onclick="resetZoom()">🎯 重置视图</button>
+        <button onclick="toggleLabels()">🏷️ 切换标签</button>
+        <button onclick="togglePhysics()">⚡ 切换物理</button>
+        <button onclick="exportGraph()">📥 导出数据</button>
+    </div>
+
+    <script>
+        // 图数据
+        let graphData = null;
+        let showLabels = true;
+        let physicsEnabled = true;
+        let simulation;
+        let svg, g, link, node, zoom;
+        
+        const typeColors = {
+            decision: '#667eea',
+            insight: '#f093fb',
+            initiative: '#4fac00',
+            convention: '#00f2fe',
+            review: '#fa709a',
+            commit: '#ffd93d',
+            survey: '#ff6b6b',
+            page: '#a855f7',
+            type: '#888'
+        };
+
+        // 加载数据
+        async function loadData() {
+            try {
+                const response = await fetch('graph-data.json');
+                graphData = await response.json();
+            } catch(e) {
+                console.log('使用示例数据');
+                graphData = {
+                    nodes: [
+                        { id: '决策1', label: '客服AI试点', type: 'decision', importance: 0.9, content: '企业AI转型第一阶段：客服场景试点' },
+                        { id: '决策2', label: 'FDE方法论', type: 'decision', importance: 0.85, content: '采用FDE飞轮方法论推进数字化转型' },
+                        { id: '洞察1', label: '成本降低60%', type: 'insight', importance: 0.8, content: '客服Agent可降低60%人工成本，ROI最高' },
+                        { id: '项目1', label: '第一阶段转型', type: 'initiative', importance: 0.7, content: '第一阶段转型任务完成' },
+                        { id: '惯例1', label: 'Conventional Commits', type: 'convention', importance: 0.6, content: '提交信息使用 Conventional Commits' },
+                        { id: '技术1', label: 'FastAPI', type: 'technology', importance: 0.7, content: '后端框架选型' },
+                        { id: '技术2', label: 'PostgreSQL', type: 'technology', importance: 0.7, content: '数据库选型' },
+                        { id: '技术3', label: 'LangChain', type: 'technology', importance: 0.65, content: 'RAG架构选型' },
+                    ],
+                    links: [
+                        { source: '决策1', target: '洞察1', type: 'leads-to' },
+                        { source: '决策1', target: '项目1', type: 'part-of' },
+                        { source: '决策2', target: '项目1', type: 'methodology' },
+                        { source: '技术1', target: '决策1', type: 'supports' },
+                        { source: '技术2', target: '决策1', type: 'supports' },
+                        { source: '技术3', target: '技术2', type: 'pairs-with' },
+                    ]
+                };
+            }
+            initGraph();
+        }
+
+        function initGraph() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            
+            d3.select('#graph-container').selectAll('svg').remove();
+            
+            svg = d3.select('#graph-container')
+                .append('svg')
+                .attr('width', width)
+                .attr('height', height);
+            
+            // 缩放行为
+            zoom = d3.zoom()
+                .scaleExtent([0.1, 4])
+                .on('zoom', (event) => {
+                    g.attr('transform', event.transform);
+                });
+            
+            svg.call(zoom);
+            
+            g = svg.append('g');
+            
+            // 力导向模拟
+            simulation = d3.forceSimulation(graphData.nodes)
+                .force('link', d3.forceLink(graphData.links).id(d => d.id).distance(180))
+                .force('charge', d3.forceManyBody().strength(-500))
+                .force('center', d3.forceCenter(width / 2, height / 2))
+                .force('collision', d3.forceCollide().radius(70))
+                .force('x', d3.forceX(width / 2).strength(0.05))
+                .force('y', d3.forceY(height / 2).strength(0.05));
+            
+            // 连线
+            link = g.append('g')
+                .attr('class', 'links')
+                .selectAll('line')
+                .data(graphData.links)
+                .join('line')
+                .attr('class', d => `link ${d.type || ''}`);
+            
+            // 节点组
+            node = g.append('g')
+                .attr('class', 'nodes')
+                .selectAll('g')
+                .data(graphData.nodes)
+                .join('g')
+                .attr('class', d => `node ${d.type === 'type' ? 'type-node' : ''}`)
+                .call(d3.drag()
+                    .on('start', dragStarted)
+                    .on('drag', dragged)
+                    .on('end', dragEnded));
+            
+            // 节点圆圈
+            node.append('circle')
+                .attr('r', d => d.type === 'type' ? 25 : 18 + d.importance * 15)
+                .attr('fill', d => typeColors[d.type] || '#667eea')
+                .attr('fill-opacity', 0.7)
+                .on('mouseover', hovered)
+                .on('mouseout', unhovered);
+            
+            // 节点图标/文字
+            node.append('text')
+                .attr('dy', 5)
+                .attr('text-anchor', 'middle')
+                .attr('fill', '#fff')
+                .attr('font-size', d => d.type === 'type' ? '14px' : '12px')
+                .text(d => {
+                    if (d.type === 'decision') return '💡';
+                    if (d.type === 'insight') return '✨';
+                    if (d.type === 'page') return '📄';
+                    if (d.type === 'type') return d.label[0];
+                    return '';
+                });
+            
+            // 节点标签
+            node.append('text')
+                .attr('dy', d => d.type === 'type' ? 45 : 35)
+                .text(d => d.label)
+                .attr('class', 'label')
+                .style('opacity', showLabels ? 1 : 0);
+            
+            // 更新统计
+            const memoryNodes = graphData.nodes.filter(n => !n.type || n.type !== 'type');
+            document.getElementById('node-count').textContent = graphData.nodes.length;
+            document.getElementById('link-count').textContent = graphData.links.length;
+            document.getElementById('memory-count').textContent = memoryNodes.length;
+            
+            simulation.on('tick', ticked);
+        }
+
+        function ticked() {
+            link
+                .attr('x1', d => d.source.x)
+                .attr('y1', d => d.source.y)
+                .attr('x2', d => d.target.x)
+                .attr('y2', d => d.target.y);
+            
+            node
+                .attr('transform', d => `translate(${d.x},${d.y})`);
+        }
+
+        function dragStarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+
+        function dragEnded(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+
+        function hovered(event, d) {
+            d3.select(this).select('circle')
+                .transition().duration(200)
+                .attr('r', d => (d.type === 'type' ? 30 : 25) + d.importance * 10)
+                .attr('fill-opacity', 1);
+            
+            const tooltip = document.getElementById('tooltip');
+            document.getElementById('tooltip-title').textContent = d.label;
+            document.getElementById('tooltip-content').textContent = d.content || '';
+            document.getElementById('tooltip-type').textContent = `类型: ${d.type}`;
+            document.getElementById('tooltip-importance').textContent = `重要性: ${d.importance.toFixed(2)}`;
+            document.getElementById('tooltip-date').textContent = d.created_at ? `时间: ${d.created_at.slice(0,10)}` : '';
+            tooltip.classList.add('visible');
+            
+            // 高亮关联节点
+            const connectedIds = new Set();
+            connectedIds.add(d.id);
+            graphData.links.forEach(l => {
+                if (l.source.id === d.id) connectedIds.add(l.target.id);
+                if (l.target.id === d.id) connectedIds.add(l.source.id);
+            });
+            
+            node.select('circle').attr('opacity', n => connectedIds.has(n.id) ? 1 : 0.2);
+            link.attr('opacity', l => (l.source.id === d.id || l.target.id === d.id) ? 1 : 0.1);
+        }
+
+        function unhovered(event, d) {
+            d3.select(this).select('circle')
+                .transition().duration(200)
+                .attr('r', d => d.type === 'type' ? 25 : 18 + d.importance * 15)
+                .attr('fill-opacity', 0.7);
+            
+            node.select('circle').attr('opacity', 1);
+            link.attr('opacity', 1);
+            document.getElementById('tooltip').classList.remove('visible');
+        }
+
+        function resetZoom() {
+            svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity);
+        }
+
+        function toggleLabels() {
+            showLabels = !showLabels;
+            node.select('text:last-child')
+                .transition().duration(300)
+                .style('opacity', showLabels ? 1 : 0);
+        }
+
+        function togglePhysics() {
+            physicsEnabled = !physicsEnabled;
+            if (physicsEnabled) {
+                simulation.alpha(0.5).restart();
+            } else {
+                simulation.stop();
+            }
+        }
+
+        function exportGraph() {
+            const data = {
+                nodes: graphData.nodes.map(n => ({ 
+                    id: n.id, 
+                    label: n.label, 
+                    type: n.type, 
+                    importance: n.importance, 
+                    content: n.content 
+                })),
+                links: graphData.links.map(l => ({ 
+                    source: typeof l.source === 'object' ? l.source.id : l.source,
+                    target: typeof l.target === 'object' ? l.target.id : l.target,
+                    type: l.type
+                }))
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'mnemosyne-graph.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // 搜索功能
+        document.getElementById('search').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            if (!query) {
+                node.select('circle').attr('opacity', 1);
+                link.attr('opacity', 1);
+                return;
+            }
+            
+            node.select('circle')
+                .attr('opacity', d => {
+                    const match = d.label.toLowerCase().includes(query) || 
+                                 (d.content && d.content.toLowerCase().includes(query)) ||
+                                 d.type.includes(query);
+                    return match ? 1 : 0.2;
+                });
+            
+            link.attr('opacity', 0.1);
+        });
+
+        // 图例点击过滤
+        document.querySelectorAll('.legend-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const type = this.dataset.type;
+                const isActive = this.classList.contains('active');
+                
+                document.querySelectorAll('.legend-item').forEach(i => i.classList.remove('active'));
+                
+                if (!isActive) {
+                    this.classList.add('active');
+                    node.select('circle')
+                        .attr('opacity', d => d.type === type ? 1 : 0.2);
+                } else {
+                    node.select('circle').attr('opacity', 1);
+                }
+            });
+        });
+
+        // 初始化
+        loadData();
+        
+        // 响应式
+        window.addEventListener('resize', () => {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            svg.attr('width', width).attr('height', height);
+            simulation.force('center', d3.forceCenter(width / 2, height / 2));
+            simulation.alpha(0.3).restart();
+        });
+    </script>
+</body>
+</html>

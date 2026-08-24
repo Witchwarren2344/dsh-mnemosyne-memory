@@ -1,0 +1,154 @@
+{
+  "nodes": [
+    {
+      "id": "mem_6888b5fd-5707-4eef-958a-bc54111c7545",
+      "label": "企业AI转型第一阶段：客服场景试点",
+      "type": "decision",
+      "importance": 0.9,
+      "content": "企业AI转型第一阶段：客服场景试点",
+      "tags": [
+        "decision"
+      ],
+      "created_at": "2026-08-24T15:53:34.438Z"
+    },
+    {
+      "id": "type_decision",
+      "label": "decision",
+      "type": "type",
+      "importance": 0.9,
+      "content": "1 条记忆"
+    },
+    {
+      "id": "mem_bfd65f59-2aa7-4db8-af36-27495a6614bb",
+      "label": "采用FDE飞轮方法论推进数字化转型",
+      "type": "decision",
+      "importance": 0.85,
+      "content": "采用FDE飞轮方法论推进数字化转型",
+      "tags": [
+        "decision"
+      ],
+      "created_at": "2026-08-24T15:53:34.439Z"
+    },
+    {
+      "id": "mem_773c4b37-a96e-4630-adc7-b1efe518701f",
+      "label": "客服Agent可降低60%人工成本，ROI最高",
+      "type": "insight",
+      "importance": 0.8,
+      "content": "客服Agent可降低60%人工成本，ROI最高",
+      "tags": [
+        "insight"
+      ],
+      "created_at": "2026-08-24T15:53:34.439Z"
+    },
+    {
+      "id": "type_insight",
+      "label": "insight",
+      "type": "type",
+      "importance": 0.9,
+      "content": "1 条记忆"
+    },
+    {
+      "id": "mem_0383c45f-2faf-4028-b4c2-58a839e19da9",
+      "label": "代码库测绘完成: JavaScript | 39 文件 | ...",
+      "type": "survey",
+      "importance": 0.8,
+      "content": "代码库测绘完成: JavaScript | 39 文件 | 15 目录",
+      "tags": [
+        "survey",
+        "codebase",
+        "JavaScript"
+      ],
+      "created_at": "2026-08-24T18:36:02.477Z"
+    },
+    {
+      "id": "type_survey",
+      "label": "survey",
+      "type": "type",
+      "importance": 0.9,
+      "content": "1 条记忆"
+    },
+    {
+      "id": "mem_ed0bded6-4ad1-4f99-912c-f9ca6d043080",
+      "label": "代码库测绘完成:  | 1 文件 | 1 目录",
+      "type": "survey",
+      "importance": 0.8,
+      "content": "代码库测绘完成:  | 1 文件 | 1 目录",
+      "tags": [
+        "survey",
+        "codebase"
+      ],
+      "created_at": "2026-08-24T19:08:22.080Z"
+    },
+    {
+      "id": "page_architecture",
+      "label": "架构与决策",
+      "type": "page",
+      "importance": 0.8,
+      "content": "## 关键决策\n\n- 企业AI转型第一阶段：客服场景试点\n- 采用FDE飞轮方法论推进数字化转型\n\n## 技术栈\n\n- 客服Agent可降低60%人工成本，ROI最高"
+    },
+    {
+      "id": "page_conventions",
+      "label": "开发惯例",
+      "type": "page",
+      "importance": 0.8,
+      "content": "## 代码惯例\n\n- 遵循项目现有编码风格\n- 提交信息使用 Conventional Commits\n- 关键决策需记录到记忆系统"
+    }
+  ],
+  "links": [
+    {
+      "source": "type_decision",
+      "target": "mem_6888b5fd-5707-4eef-958a-bc54111c7545",
+      "type": "category"
+    },
+    {
+      "source": "type_insight",
+      "target": "mem_773c4b37-a96e-4630-adc7-b1efe518701f",
+      "type": "category"
+    },
+    {
+      "source": "type_survey",
+      "target": "mem_0383c45f-2faf-4028-b4c2-58a839e19da9",
+      "type": "category"
+    },
+    {
+      "source": "page_architecture",
+      "target": "mem_6888b5fd-5707-4eef-958a-bc54111c7545",
+      "type": "relates-to"
+    },
+    {
+      "source": "page_architecture",
+      "target": "mem_bfd65f59-2aa7-4db8-af36-27495a6614bb",
+      "type": "relates-to"
+    },
+    {
+      "source": "page_architecture",
+      "target": "mem_773c4b37-a96e-4630-adc7-b1efe518701f",
+      "type": "relates-to"
+    },
+    {
+      "source": "page_conventions",
+      "target": "mem_6888b5fd-5707-4eef-958a-bc54111c7545",
+      "type": "relates-to"
+    },
+    {
+      "source": "page_conventions",
+      "target": "mem_bfd65f59-2aa7-4db8-af36-27495a6614bb",
+      "type": "relates-to"
+    },
+    {
+      "source": "page_conventions",
+      "target": "mem_773c4b37-a96e-4630-adc7-b1efe518701f",
+      "type": "relates-to"
+    },
+    {
+      "source": "mem_6888b5fd-5707-4eef-958a-bc54111c7545",
+      "target": "mem_bfd65f59-2aa7-4db8-af36-27495a6614bb",
+      "type": "similar"
+    },
+    {
+      "source": "mem_0383c45f-2faf-4028-b4c2-58a839e19da9",
+      "target": "mem_ed0bded6-4ad1-4f99-912c-f9ca6d043080",
+      "type": "similar"
+    }
+  ]
+}
