@@ -131,14 +131,43 @@ const changes = await mnemo_pages_delta();
 
 ```bash
 # 克隆项目
-git clone https://github.com/your-org/mnemosyne-dsh.git
-cd mnemosyne-dsh
+git clone https://github.com/fjzzwxp/dsh-mnemosyne-memory.git
+cd dsh-mnemosyne-memory
 
 # 安装依赖
 npm install
 
-# 注册为 DSH 插件
-dsh plugin --profile web add /path/to/mnemosyne-dsh
+# 方式一：自动安装（推荐）
+./scripts/install.sh
+
+# 方式二：本地符号链接（开发模式）
+./scripts/install.sh web --local
+
+# 方式三：手动注册
+dsh plugin --profile web add $(pwd)
+```
+
+### 验证安装
+
+```bash
+# 检查插件状态
+dsh plugin --profile web list
+
+# 运行诊断
+dsh --profile web eval 'mnemo_diagnose()'
+
+# 运行测试
+npm test
+```
+
+### 卸载
+
+```bash
+# 自动卸载
+./scripts/uninstall.sh
+
+# 卸载并清除数据
+./scripts/uninstall.sh web --data
 ```
 
 ### 独立使用（ES Module）

@@ -35,14 +35,34 @@
     "@deepseek-ai/cordis": "^4.0.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --experimental-vm-modules test/plugin.test.mjs",
+    "test:git": "node --experimental-vm-modules test/plugin.test.mjs",
+    "test:watch": "node --watch --experimental-vm-modules test/plugin.test.mjs",
+    "install:local": "bash scripts/install.sh web --local",
+    "uninstall": "bash scripts/uninstall.sh"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/fjzzwxp/dsh-mnemosyne-memory.git"
   },
   "bugs": {
-    "url": "https://github.com/wuwu/dsh-mnemosyne-memory/issues"
+    "url": "https://github.com/fjzzwxp/dsh-mnemosyne-memory/issues"
   },
-  "homepage": "https://github.com/fjzzwxp/dsh-mnemosyne-memory"
+  "homepage": "https://github.com/fjzzwxp/dsh-mnemosyne-memory",
+  "files": [
+    "src",
+    "config",
+    "scripts",
+    "test",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "cordis.patch.yml"
+  ],
+  "types": "./src/index.d.ts",
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
 }
