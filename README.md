@@ -11,6 +11,28 @@
 [![Node.js >= 18](https://img.shields.io/badge/node-%3E%3D18-brightgreen)](https://nodejs.org)
 [![DSH Plugin](https://img.shields.io/badge/DSH-Plugin-orange)](https://github.com/deepseek-ai/deepseek-harness)
 [![Cordis](https://img.shields.io/badge/Cordis-Compatible-6d28d9)](https://github.com/deepseek-ai/cordis)
+[![Free Software](https://img.shields.io/badge/免费-Free-green)](https://github.com/fjzzwxp/dsh-mnemosyne-memory)
+
+---
+
+## 🎉 完全免费 | 100% Free
+
+> **Mnemosyne 是一款完全免费的开源插件，采用 MIT 许可证。**
+>
+> **Mnemosyne is a 100% free open-source plugin under the MIT License.**
+
+| 项目 | Item | 费用 | Cost |
+|------|------|------|------|
+| 插件本体 | Plugin本体 | ✅ **完全免费** | **FREE** |
+| 本地部署 | Local (Ollama) | ✅ **零成本** | **$0** |
+| 云端 API | Cloud (Gemini/DeepSeek) | 可选升级 | Optional |
+
+### 💡 两种使用方式 | Two Ways to Use
+
+| 方式 | Approach | 成本 | 适用场景 |
+|------|----------|------|----------|
+| 🏠 **本地部署** | Local (Ollama) | 免费 | 隐私敏感、离线环境 |
+| ☁️ **云端 API** | Cloud (Gemini/DeepSeek) | 可选 | 需要更高精度 |
 
 ---
 
@@ -33,104 +55,97 @@
 | 👥 Multi-Workspace | 多 Workspace | Isolated per project, shared memory supported | 按项目隔离，支持团队共享记忆 |
 | ⚡ Delta Refresh | Delta 刷新 | Incremental updates, only changed pages refresh | 只更新有变化的页面，高效同步 |
 
-### Supported AI Providers | 支持的 AI 提供商
+---
 
-| Provider | 提供商 | Embedding Model | 嵌入模型 | Dimensions | 维度 | Free Tier | 免费额度 |
-|----------|--------|-----------------|----------|------------|------|-----------|---------|
-| **Gemini** | Gemini | gemini-embedding-001 | gemini-embedding-001 | 768 | 768 | ✅ 1500/day | 每天 1500 次 |
-| **OpenAI** | OpenAI | text-embedding-3-small/large | text-embedding-3-small/large | 1536/3072 | 1536/3072 | ⚠️ Pay per use | 按量付费 |
-| **DeepSeek** | DeepSeek | deepseek-embedding | deepseek-embedding | 2048 | 2048 | ⚠️ New users | 新用户送额度 |
-| **Ollama** | Ollama | nomic-embed-text / bge-large | nomic-embed-text / bge-large | 768/1024 | 768/1024 | ✅ Free | 完全免费 |
-| **Agnes AI** | Agnes AI | agnes-embedding | agnes-embedding | 1536 | 1536 | ⚠️ New users | 新用户送额度 |
+## 🆓 获取免费 Gemini API Key | Get Free Gemini API Key
+
+> **Google AI Studio 提供免费 API Key，每月 1500 次嵌入请求额度，足以满足日常使用。**
+>
+> **Google AI Studio offers a free API key with 1,500 embedding requests per month — enough for daily use.**
+
+### 步骤 | Steps
+
+```bash
+# 1. 访问 Google AI Studio
+open https://aistudio.google.com/apikey
+
+# 2. 登录你的 Google 账号（Google 账号免费）
+
+# 3. 点击 "Create API Key" 按钮
+#    Click "Create API Key" button
+
+# 4. 复制生成的 API Key（格式：AQ.Ab...）
+#    Copy the generated API Key (format: AQ.Ab...)
+
+# 5. 将 Key 添加到配置
+#    Add the Key to your config
+cp config/mnemosyne.json.example config/mnemosyne.json
+nano config/mnemosyne.json
+# 修改 apiKey 字段为你的 Key
+```
+
+### 免费版额度 | Free Tier Quota
+
+| 功能 | Feature | 每日额度 | 每月费用 |
+|------|---------|----------|----------|
+| 嵌入请求 | Embedding requests | 1,500 次 | $0 |
+| 文本生成 | Text generation | 60 次/分钟 | $0 |
+| 超出后 | After quota exceeded | 降级为 rate limit | $0（仅限速） |
+
+> **提示**：即使超出免费额度，服务不会停止，只是请求速率会降低。
+> **Tip**: Even after exceeding the free quota, the service won't stop — only rate limits apply.
 
 ---
 
-## ✨ Features | 功能特性
+## 🏠 本地部署方案 | Local Deployment (Ollama)
 
-### 1. Vector Semantic Search | 向量语义搜索
+> **如果你希望完全离线、零成本运行，可以使用 Ollama 本地部署嵌入模型。**
+>
+> **For fully offline, zero-cost operation, use Ollama to run embedding models locally.**
 
-Support multiple embedding models for semantic understanding and retrieval:
-支持多种嵌入模型，实现基于语义的理解和检索：
-
-```javascript
-// 自然语言查询
-const results = await mnemo_recall('上次我们决定用什么框架？');
-// → Returns relevant memories sorted by semantic similarity
-// → 返回相关记忆，按语义相似度排序
-```
-
-### 2. LLM-Driven Deep Reflection | LLM 驱动的深度反思
-
-Automatically extract key information from conversations:
-自动从会话中提取关键信息：
-
-- **Decision Extraction** — 识别"决定"、"选择"、"采用"等关键词
-- **Insight Generation** — 发现新模式、重复出现的问题
-- **Convention Summarization** — 自动归纳开发惯例和最佳实践
-
-### 3. Auto-Generated Knowledge Pages | 知识页面自动生成
-
-Auto-generate three types of knowledge pages from memory data:
-从记忆数据自动生成三类知识页面：
-
-| Page Type | 页面类型 | Content | 内容 | Update Trigger | 更新时机 |
-|-----------|----------|---------|------|----------------|----------|
-| `architecture` | 架构 | Architecture decisions, tech stack | 架构决策、技术选型 | After each reflection | 每次反思后 |
-| `conventions` | 惯例 | Development conventions, coding standards | 开发惯例、编码规范 | Delta refresh | Delta 刷新 |
-| `initiatives` | 项目 | Ongoing projects, goal tracking | 进行中项目、目标追踪 | Manual/Auto | 手动/自动 |
-
-### 4. Codebase Survey | 代码库测绘
-
-Auto-identify and index 30+ configuration file patterns:
-自动识别并索引 30+ 配置文件模式：
-
-```
-package.json / pom.xml / go.mod          # Dependency management
-tsconfig.json / webpack.config.js         # Build configuration
-.eslintrc / prettier.config.js           # Code style
-Dockerfile / docker-compose.yml          # Container config
-.github/workflows/                       # CI/CD
-.env / .env.local                        # Environment variables
-```
-
-### 5. Cross-Session Memory Recall | 跨会话记忆回溯
-
-Import historical sessions to inherit existing knowledge:
-导入历史会话，继承已有知识：
+### 安装 Ollama | Install Ollama
 
 ```bash
-# 从 DSH 自身会话导入
-mnemo_import_history --limit 20
+# macOS
+brew install ollama
 
-# 从 Claude Code 导入
-mnemo_import claude --path ~/.claude/projects
+# Linux
+curl -fsSL https://ollama.com/install.sh | sh
 
-# 从 ChatGPT 导出导入
-mnemo_import chatgpt --path ./conversations.json
+# Windows: 下载 https://ollama.com/download
 ```
 
-### 6. Multi-Workspace Shared Memory | 多 Workspace 共享记忆
+### 拉取嵌入模型 | Pull Embedding Model
 
-Each project has isolated memory bank, supporting team sharing:
-每个项目拥有独立的记忆银行，支持团队共享：
+```bash
+# 推荐：nomic-embed-text（768 维，轻量高效）
+ollama pull nomic-embed-text
 
-```
-data/mnemosyne/
-├── banks/
-│   ├── project-x/memory.json    # Project X memory
-│   ├── project-y/memory.json    # Project Y memory
-│   └── shared/common.json       # Shared memory
+# 备选：bge-large（1024 维，精度更高但更慢）
+ollama pull bge-large
 ```
 
-### 7. Delta Page Refresh | Delta 页面刷新
+### 配置本地模式 | Configure Local Mode
 
-Only update changed pages, avoiding full recalculation:
-只更新有变化的页面，避免全量重算：
-
-```javascript
-const changes = await mnemo_pages_delta();
-// → { added: 2, modified: 5, deleted: 0 }
+```bash
+# 编辑配置文件
+nano config/mnemosyne.json
 ```
+
+```json
+{
+  "embedding": {
+    "enabled": true,
+    "provider": "ollama",
+    "model": "nomic-embed-text",
+    "dimensions": 768,
+    "endpoint": "http://localhost:11434"
+  }
+}
+```
+
+> **优点**：完全离线、无 API 限制、数据不离开本地
+> **Pros**: Fully offline, no API limits, data stays local
 
 ---
 
@@ -164,12 +179,40 @@ dsh plugin --profile web add $(pwd)
 
 ### Configure API Keys | 配置 API Key
 
+#### 方式 A：使用免费 Gemini API（推荐）| Method A: Free Gemini API (Recommended)
+
 ```bash
-# Copy config example
+# 复制配置模板
 cp config/mnemosyne.json.example config/mnemosyne.json
 
-# Edit config and add your API keys
+# 编辑配置，填入你的 Gemini API Key
 nano config/mnemosyne.json
+```
+
+```json
+{
+  "embedding": {
+    "provider": "gemini",
+    "apiKey": "你的-Gemini-API-Key"
+  }
+}
+```
+
+#### 方式 B：本地 Ollama 部署 | Method B: Local Ollama
+
+```bash
+# 无需 API Key，编辑配置即可
+nano config/mnemosyne.json
+```
+
+```json
+{
+  "embedding": {
+    "provider": "ollama",
+    "model": "nomic-embed-text",
+    "endpoint": "http://localhost:11434"
+  }
+}
 ```
 
 ### Verify Installation | 验证安装
@@ -207,16 +250,16 @@ export MNEMOSYNE_DATA_DIR=./data/mnemosyne
 export MNEMOSYNE_ENABLED=true
 
 # Embedding model config
-export MNEMOSYNE_PROVIDER=gemini          # openai|gemini|deepseek|ollama|agnes
+export MNEMOSYNE_PROVIDER=gemini          # ollama|gemini|openai|deepseek
 export MNEMOSYNE_EMBEDDING_MODEL=gemini-embedding-001
 export MNEMOSYNE_EMBEDDING_DIMENSIONS=768
 
-# API Keys
-export GEMINI_API_KEY=your-key-here
+# API Keys（如果使用云端 API）
+export GEMINI_API_KEY=your-free-key-here  # 免费获取
 export OPENAI_API_KEY=sk-xxx
 export DEEPSEEK_API_KEY=sk-xxx
 
-# Ollama local deployment
+# Ollama 本地模式（无需 API Key）
 export MNEMOSYNE_PROVIDER=ollama
 export MNEMOSYNE_EMBEDDING_MODEL=nomic-embed-text
 export MNEMOSYNE_EMBEDDING_ENDPOINT=http://localhost:11434
@@ -230,10 +273,10 @@ export MNEMOSYNE_EMBEDDING_ENDPOINT=http://localhost:11434
   "enabled": true,
   "embedding": {
     "enabled": true,
-    "provider": "gemini",
-    "model": "gemini-embedding-001",
+    "provider": "ollama",       // ollama | gemini | openai | deepseek
+    "model": "nomic-embed-text", // nomic-embed-text | gemini-embedding-001
     "dimensions": 768,
-    "apiKey": "YOUR_API_KEY"
+    "apiKey": "可选"            // Ollama 模式不需要此字段
   },
   "reflect": {
     "enabled": true,
@@ -241,7 +284,7 @@ export MNEMOSYNE_EMBEDDING_ENDPOINT=http://localhost:11434
     "model": "gemini-flash-lite-latest",
     "temperature": 0.3,
     "maxTokens": 2000,
-    "apiKey": "YOUR_API_KEY"
+    "apiKey": "可选"            // Ollama 模式不需要此字段
   },
   "sharedBanks": {}
 }
@@ -383,29 +426,51 @@ Automatically triggered during DSH sessions:
 | **Codebase Survey** | None | 30+ config patterns | Enhanced context understanding | 增强上下文理解 |
 | **Cross-Session** | None | Import historical sessions | Inherit existing knowledge | 继承已有知识 |
 | **Multi-Workspace** | Per-repo | Per-workspace + shared | Flexible isolation/sharing | 灵活隔离/共享 |
-| **AI Providers** | OpenAI only | 5 providers | More flexible choices | 更灵活的选择 |
-| **Git Import** | Commit messages | Enhanced (with diff) | Richer context | 更丰富的上下文 |
-| **Permissions** | None | Role isolation + importance weights | Enterprise security | 企业级安全 |
 | **Local Offline** | ❌ | ✅ | No external dependency | 零外部依赖 |
+| **Cost** | Paid API | 🆓 **Free** | MIT License | **完全免费** |
 
 ---
 
 ## 🚀 Quick Start | 快速开始
 
+### 快速开始（免费 Gemini API）| Quick Start (Free Gemini API)
+
 ```bash
-# 1. Install
+# 1. 安装插件
 git clone https://github.com/fjzzwxp/dsh-mnemosyne-memory.git ~/.dsh/plugins/
 cd ~/.dsh/plugins/dsh-mnemosyne-memory && npm install
 
-# 2. Configure
-cp config/mnemosyne.json.example config/mnemosyne.json
-# Edit config/mnemosyne.json and add your Gemini API key
+# 2. 获取免费 API Key
+open https://aistudio.google.com/apikey
 
-# 3. Install plugin
+# 3. 配置
+cp config/mnemosyne.json.example config/mnemosyne.json
+# 编辑 config/mnemosyne.json，填入你的免费 API Key
+
+# 4. 安装
 ./scripts/install.sh
 
-# 4. Start DSH
+# 5. 启动 DSH
 dsh --profile web
+```
+
+### 快速开始（本地 Ollama，完全离线）| Quick Start (Local Ollama, Fully Offline)
+
+```bash
+# 1. 安装 Ollama
+brew install ollama
+ollama pull nomic-embed-text
+
+# 2. 安装插件
+git clone https://github.com/fjzzwxp/dsh-mnemosyne-memory.git ~/.dsh/plugins/
+cd ~/.dsh/plugins/dsh-mnemosyne-memory && npm install
+
+# 3. 配置本地模式
+cp config/mnemosyne.json.example config/mnemosyne.json
+# 修改 provider 为 "ollama"
+
+# 4. 安装并启动
+./scripts/install.sh && dsh --profile web
 ```
 
 ---
@@ -415,6 +480,9 @@ dsh --profile web
 [MIT License](./LICENSE)
 
 Copyright (c) 2025 [fjzzwxp](https://github.com/fjzzwxp)
+
+**完全免费，可自由使用、修改和分发。**
+**100% Free — use, modify, and distribute freely.**
 
 ---
 
@@ -428,7 +496,8 @@ Copyright (c) 2025 [fjzzwxp](https://github.com/fjzzwxp)
 
 - [DSH 官方文档](https://deepseek-harness.github.io/deepseek-harness/)
 - [Hindsight 官方仓库](https://github.com/vectorize-io/hindsight)
-- [Gemini API 文档](https://ai.google.dev/gemini-api/docs)
+- [Google AI Studio（免费 API Key）](https://aistudio.google.com/apikey)
+- [Ollama 本地部署](https://ollama.com)
 - [CHANGELOG](./CHANGELOG.md)
 - [Contributing](./CONTRIBUTING.md)
 - [Testing](./TESTING.md)
@@ -437,5 +506,5 @@ Copyright (c) 2025 [fjzzwxp](https://github.com/fjzzwxp)
 
 ## 🏷️ Topics | 标签
 
-`dsh` `deepseek` `harness` `plugin` `memory` `mnemosyne` `vector-search` `semantic-search` `embedding` `llm` `hindsight` `cordis` `ai-agent` `long-term-memory` `knowledge-management` `git-import` `multi-workspace` `share-memory` `open-source` `typescript` `javascript` `nodejs`
+`dsh` `deepseek` `harness` `plugin` `memory` `mnemosyne` `vector-search` `semantic-search` `embedding` `llm` `hindsight` `cordis` `ai-agent` `long-term-memory` `knowledge-management` `git-import` `multi-workspace` `share-memory` `open-source` `typescript` `javascript` `nodejs` `free` `local` `ollama`
 # TODO: Add more tests
