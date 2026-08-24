@@ -39,10 +39,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/wuwu/dsh-mnemosyne-memory"
+    "url": "https://github.com/fjzzwxp/dsh-mnemosyne-memory.git"
   },
   "bugs": {
     "url": "https://github.com/wuwu/dsh-mnemosyne-memory/issues"
   },
-  "homepage": "https://github.com/wuwu/dsh-mnemosyne-memory"
+  "homepage": "https://github.com/fjzzwxp/dsh-mnemosyne-memory"
 }
