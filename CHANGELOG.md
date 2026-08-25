@@ -5,6 +5,47 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.4.0] - 2025-08-25
+
+### 新增
+- **Hindsight 架构对齐**：完整对标 Hindsight coding-agents 集成架构
+- **Recall 模式**：支持 `guided` 和 `routingGuidance` 两种检索模式
+- **Writeback 策略**：支持 `guided`（智能检测）和 `automatic` 两种回写模式
+- **Idle Review**：30秒空闲自动触发反思（idleReviewMs）
+- **Mental Models**：概念聚类生成，自动提取抽象模式和核心思想
+- **决策检测**：智能识别决策关键词，提升重要性权重
+- **工具调用记录**：记录重要工具操作（edit/write/bash/subagent）
+
+### 改进
+- **plugin.js**：生命周期管理增强，支持更精细的上下文注入
+- **core.js**：配置扩展，Hindsight 兼容性参数
+- **tools.js**：mnemo_recall 添加 mode 参数，mnemo_diagnose 添加兼容性检查
+- **cordis.patch.yml**：完整配置示例，对标 Hindsight DSH 集成
+
+### 工具更新
+- `mnemo_recall` — 新增 `mode` 参数（guided/routingGuidance）
+- `mnemo_diagnose` — 新增 Hindsight 兼容性检查
+- `mnemo_clustering` — Mental Models 概念聚类（已存在）
+
+### 配置示例
+```yaml
+# cordis.patch.yml 配置
+- config:
+    defaultRecallLimit: 10
+    displayMode: sidebar
+    idleReviewMs: 30000
+    lifecycleEnabled: true
+    recallMode: guided
+    remoteAccess: read-only
+    routingGuidance: true
+    tabEnabled: true
+    timeoutMs: 10000
+    writeEnabled: true
+    writebackMode: guided
+  id: mnemon
+  name: dsh-mnemon
+```
+
 ## [1.3.0] - 2025-08-25
 
 ### 新增

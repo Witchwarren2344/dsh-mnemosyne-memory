@@ -2,15 +2,28 @@
 #
 # 安装: `dsh plugin --profile <name> add dsh-mnemosyne-memory`
 #
-# 此插件提供长期记忆能力：
-# - 向量语义搜索（支持 Gemini/OpenAI/DeepSeek/Ollama）
-# - LLM 驱动的深度反思
-# - 知识页面自动生成
-# - 代码库测绘
-# - 跨会话记忆回溯
+# 对标 Hindsight coding-agents DSH 集成
+# 配置说明：
+# - id: 插件标识（对标 Hindsight 的 mnemon）
+# - name: 显示名称
+# - config: 生命周期配置参数
 
 patches:
   - target: enterprise-ai-manager
     patch:
       - path: ./src/mnemosyne/plugin.js
         inject: true
+
+# Hindsight 兼容配置（可通过 cordis.yml 覆盖）
+# config:
+#   defaultRecallLimit: 10
+#   displayMode: sidebar
+#   idleReviewMs: 30000
+#   lifecycleEnabled: true
+#   recallMode: guided
+#   remoteAccess: read-only
+#   routingGuidance: true
+#   tabEnabled: true
+#   timeoutMs: 10000
+#   writeEnabled: true
+#   writebackMode: guided
