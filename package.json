@@ -1,7 +1,7 @@
 {
   "name": "dsh-mnemosyne-memory",
   "version": "1.4.0",
-  "description": "Mnemosyne 永久记忆插件 - 为 DSH 提供长期记忆、向量搜索和 LLM 反思功能",
+  "description": "Mnemosyne \u6c38\u4e45\u8bb0\u5fc6\u63d2\u4ef6 - \u4e3a DSH \u63d0\u4f9b\u957f\u671f\u8bb0\u5fc6\u3001\u5411\u91cf\u641c\u7d22\u548c LLM \u53cd\u601d\u529f\u80fd",
   "type": "module",
   "main": "./src/plugin.js",
   "exports": {
@@ -13,7 +13,8 @@
     },
     "./tools": {
       "default": "./src/mnemosyne/tools.js"
-    }
+    },
+    "./client": "./client/index.js"
   },
   "keywords": [
     "mnemosyne",
@@ -51,6 +52,7 @@
   "homepage": "https://github.com/fjzzwxp/dsh-mnemosyne-memory",
   "files": [
     "src",
+    "client",
     "config",
     "scripts",
     "test",
@@ -69,10 +71,10 @@
         "@deepseek-ai/dsh-client-runtime",
         "@deepseek-ai/dsh-client-locale",
         "@deepseek-ai/dsh-client-ui-primitives",
-        "@deepseek-ai/dsh-client-ui-sidebar"
+        "@deepseek-ai/dsh-client-ui-sidebar",
+        "@deepseek-ai/dsh-client-ui-slots"
       ],
-      "platform": "web",
-      "entry": "./client/index.js"
+      "platform": "web"
     }
   }
 }
