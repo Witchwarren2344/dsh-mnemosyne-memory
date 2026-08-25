@@ -1,11 +1,15 @@
 /**
  * Mnemosyne Memory Panel - DSH Client Component
  * 
- * 注册 Memory 侧边栏面板到 DSH Web GUI
+ * 对标 dsh-scheduler 的注册模式：
+ * - 使用 window.__ModuleLoader__.load 注册
+ * - client ID 必须与 cordis.yml 中的 id 匹配（mnemosyne）
+ * - 通过 ctx.slots.inject("knj.menu.item") 注册到侧边栏
+ * - 导出 apply, inject, name
  */
 
 window.__ModuleLoader__.load({
-	id: "dsh-mnemosyne-memory",
+	id: "mnemosyne",
 	factory: (require) => {
 		let react = require("react");
 		let react_jsx_runtime = require("react/jsx-runtime");
@@ -427,25 +431,35 @@ window.__ModuleLoader__.load({
 			);
 		}
 		
-		// 注册到 DSH
-		return {
-			init: (ctx) => {
-				// 注册 Memory 侧边栏面板
-				if (ctx.sidebar && ctx.sidebar.registerPanel) {
-					ctx.sidebar.registerPanel({
-						id: "mnemosyne-memory",
-						title: dict.entry.label,
-						icon: "🧠",
-						component: MemoryPanel,
-						order: 3 // 在 Files(1) 和 Agent(2) 之后
-					});
-				}
-				
-				// 注册到 slots
-				if (ctx.slots) {
-					ctx.slots.add("sidebar:memory", MemoryPanel, { order: 3 });
-				}
-			}
-		};
+		// DSH 插件标准导出
+		const name = "dsh-mnemosyne-memory";
+		const inject = [
+			"locale",
+			"slots"
+		];
+
+		function apply(ctx) {
+			ctx.effect(() => ctx.locale.register("mnemosyne", {
+				zh,
+				en
+			}), "mnemosyne: dictionaries");
+
+			const t = ctx.locale.bind("mnemosyne");
+
+			ctx.effect(() => {
+				if (!ctx.slots) return;
+				ctx.slots.inject("knj.menu.item", () => ctx.slots.register({
+					name: "knj.menu.item",
+					id: "mnemosyne",
+					order: 30,
+					locale: "mnemosyne"
+				}, () => react.createElement(MemoryPanel, { t })));
+			}, "mnemosyne: sidebar entry");
+		}
+
+		exports.apply = apply;
+		exports.inject = inject;
+		exports.name = name;
+		return module.exports;
 	}
 });
